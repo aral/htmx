@@ -1857,6 +1857,10 @@ var htmx = (function() {
     if (!swapOptions) {
       swapOptions = {}
     }
+    // default contextElement for events
+    if (!swapOptions.contextElement) {
+      swapOptions.contextElement = document.body
+    }
 
     target = resolveTarget(target)
 
@@ -4979,7 +4983,6 @@ var htmx = (function() {
 /**
  * @typedef HtmxSwapSpecification
  * @property {HtmxSwapStyle} swapStyle
- * @property {string} swapStyleSelector
  * @property {number} swapDelay
  * @property {number} settleDelay
  * @property {boolean} [transition]
