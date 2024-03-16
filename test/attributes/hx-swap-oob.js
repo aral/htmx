@@ -215,28 +215,28 @@ describe('hx-swap-oob attribute', function() {
   }
 
   it('oob swap works with a swap delay', function(done) {
-      this.server.respondWith('GET', '/test', "<div id='d2' hx-swap-oob='innerHTML swap:10ms'>Clicked!</div>")
-      var div = make("<div id='d1' hx-get='/test'></div>")
-      var div2 = make("<div id='d2'></div>")
-      div.click()
-      this.server.respond()
-      div2.innerText.should.equal('')
-      setTimeout(function() {
-        div2.innerText.should.equal('Clicked!')
-        done()
-      }, 30)
-    })
+    this.server.respondWith('GET', '/test', "<div id='d2' hx-swap-oob='innerHTML swap:10ms'>Clicked!</div>")
+    var div = make("<div id='d1' hx-get='/test'></div>")
+    var div2 = make("<div id='d2'></div>")
+    div.click()
+    this.server.respond()
+    div2.innerText.should.equal('')
+    setTimeout(function() {
+      div2.innerText.should.equal('Clicked!')
+      done()
+    }, 30)
+  })
 
-    it('oob swap works with a settle delay', function(done) {
-      this.server.respondWith('GET', '/test', "<div id='d2' class='foo' hx-swap-oob='true settle:10ms'>Clicked!</div>")
-      var div = make("<div id='d1' hx-get='/test'></div>")
-      var div2 = make("<div id='d2'></div>")
-      div.click()
-      this.server.respond()
-      div2.classList.contains('foo').should.equal(false)
-      setTimeout(function() {
-        byId('d2').classList.contains('foo').should.equal(true)
-        done()
-      }, 30)
-    })
+  it('oob swap works with a settle delay', function(done) {
+    this.server.respondWith('GET', '/test', "<div id='d2' class='foo' hx-swap-oob='true settle:10ms'>Clicked!</div>")
+    var div = make("<div id='d1' hx-get='/test'></div>")
+    var div2 = make("<div id='d2'></div>")
+    div.click()
+    this.server.respond()
+    div2.classList.contains('foo').should.equal(false)
+    setTimeout(function() {
+      byId('d2').classList.contains('foo').should.equal(true)
+      done()
+    }, 30)
+  })
 })
