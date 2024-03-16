@@ -1445,6 +1445,9 @@ var htmx = (function() {
               swapWithStyle(swapStyle, target, target, fragment, settleInfo)
 
               forEach(settleInfo.elts, function(elt) {
+                if (elt.classList) {
+                  elt.classList.add(htmx.config.settlingClass)
+                }
                 triggerEvent(elt, 'htmx:oobAfterSwap', beforeSwapDetails)
               })
 
