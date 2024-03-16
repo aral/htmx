@@ -1458,12 +1458,12 @@ var htmx = (function() {
               maybeDelay(doSettle, swapSpec.settleDelay)
             }
 
-            doSwap = wrapWithTransition(doSwap, swapSpec)
+            doSwap = /** @type {() => void} */ (wrapWithTransition(doSwap, target, swapOptions, swapSpec))
 
             try {
               maybeDelay(doSwap, swapSpec.swapDelay)
             } catch (e) {
-              triggerErrorEvent(elt, 'htmx:oobSwapError', swapOptions.eventInfo)
+              triggerErrorEvent(target, 'htmx:oobSwapError', swapOptions.eventInfo)
             }
           }
         }
@@ -1918,12 +1918,12 @@ var htmx = (function() {
       }
       handlePreservedElements(fragment)
 
-      let doSwap = function() {
-        swapWithStyle(swapSpec.swapStyle, swapOptions.contextElement, target, fragment, settleInfo)
+      let doSwap = () => {
+        swapWithStyle(swapSpec.swapStyle, swapOptions.contextElement, /** @type {Element} */ (target), fragment, settleInfo)
 
         applySelectionInfo(selectionInfo, swapSpec)
 
-        target.classList.remove(htmx.config.swappingClass)
+        ;/** @type {Element} */ (target).classList.remove(htmx.config.swappingClass)
         forEach(settleInfo.elts, function(elt) {
           if (elt.classList) {
             elt.classList.add(htmx.config.settlingClass)
@@ -1946,12 +1946,12 @@ var htmx = (function() {
         maybeDelay(doSettle, swapSpec.settleDelay)
       }
 
-      doSwap = wrapWithTransition(doSwap, swapSpec)
+      doSwap = /** @type {() => void} */ (wrapWithTransition(doSwap, target, swapOptions, swapSpec))
 
       try {
         maybeDelay(doSwap, swapSpec.swapDelay)
       } catch (e) {
-        triggerErrorEvent(elt, 'htmx:swapError', swapOptions.eventInfo)
+        triggerErrorEvent(target, 'htmx:swapError', swapOptions.eventInfo)
         throw e
       }
     }
@@ -1959,7 +1959,7 @@ var htmx = (function() {
 
   /**
    * @param {Function} callback
-   * @param {integer} milliseconds
+   * @param {number} milliseconds
    */
   function maybeDelay(callback, milliseconds) {
     if (milliseconds > 0) {
@@ -1971,18 +1971,20 @@ var htmx = (function() {
 
   /**
    * @param {Function} callback
+   * @param {Element} target
+   * @param {SwapOptions} swapOptions
    * @param {HtmxSwapSpecification} swapSpec
    */
-  function wrapWithTransition(callback, swapSpec) {
+  function wrapWithTransition(callback, target, swapOptions, swapSpec) {
     let shouldTransition = htmx.config.globalViewTransitions
     if (swapSpec.hasOwnProperty('transition')) {
       shouldTransition = swapSpec.transition
     }
 
     if (shouldTransition &&
-          // @ts-ignore experimental feature atm
-          document.startViewTransition) {
-      triggerEvent(elt, 'htmx:beforeTransition', swapSpec.eventInfo)
+      // @ts-ignore experimental feature atm
+      document.startViewTransition) {
+      triggerEvent(target, 'htmx:beforeTransition', swapOptions.eventInfo)
 
       // const innerCallback = callback
 
