@@ -1452,7 +1452,7 @@ var htmx = (function() {
               })
 
               const doSettle = function() {
-                settle(settleInfo, swapSpec, swapOptions)
+                settle(settleInfo, swapSpec, swapOptions || {})
               }
 
               maybeDelay(doSettle, swapSpec.settleDelay)
