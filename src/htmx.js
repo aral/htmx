@@ -1405,10 +1405,10 @@ var htmx = (function() {
   /**
    * @param {string} oobValue
    * @param {Element} oobElement
-   * @param {HtmxSettleInfo} settleInfo
+   * @param {HtmxSettleInfo} _settleInfo
    * @param {SwapOptions} swapOptions
    */
-  function oobSwap(oobValue, oobElement, settleInfo, swapOptions) {
+  function oobSwap(oobValue, oobElement, _settleInfo, swapOptions) {
     const swapSpec = getSwapSpecification(oobElement, oobValue)
 
     let selector = '#' + getRawAttribute(oobElement, 'id')
